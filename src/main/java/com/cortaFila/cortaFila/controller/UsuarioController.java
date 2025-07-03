@@ -7,12 +7,10 @@ import com.cortaFila.cortaFila.model.Usuario;
 import com.cortaFila.cortaFila.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,4 +26,24 @@ public class UsuarioController {
         URI uri = URI.create("/" + responseDTO.id());
         return ResponseEntity.created(uri).body(responseDTO);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable("id") Integer id, @RequestBody UsuarioRequestDTO usuarioRequestDTO){
+        Optional<Usuario> usuarioOptional = usuarioService.buscarPorId(id);
+
+        if (usuarioOptional.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        Usuario usuario = usuarioOptional.get();
+        usuario.setNome(usuarioRequestDTO.nome());
+        usuario.setEmail(usuarioRequestDTO.email());
+        usuario.setSenha(usuarioRequestDTO.senha());
+        usuario.setUsername(usuarioRequestDTO.username());
+        usuario.setRole(usuarioRequestDTO.role());
+
+        usuarioService.atualizar(usuario);
+        return ResponseEntity.noContent().build();
+    }
+
 }
