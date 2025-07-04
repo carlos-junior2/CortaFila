@@ -2,13 +2,13 @@ package com.cortaFila.cortaFila.service;
 
 import com.cortaFila.cortaFila.controller.dto.UsuarioRequestDTO;
 import com.cortaFila.cortaFila.exception.RegistroDuplicadoException;
+import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.model.Usuario;
 import com.cortaFila.cortaFila.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,37 +17,40 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
 
     public Usuario salvar(UsuarioRequestDTO requestDTO){
-        if (usuarioRepository.existsByEmail(requestDTO.email())){
-            throw new RegistroDuplicadoException("Já existe um usuário com este email!");
-        }
-
-        if (usuarioRepository.existsByUsername(requestDTO.username())){
-            throw new RegistroDuplicadoException("Já existe um usuário com este username!");
-        }
-        String senhaCriptografada = passwordEncoder.encode(requestDTO.senha());
+        validarDuplicidade(requestDTO.email(), requestDTO.username(), null);
         Usuario usuario = new Usuario();
         usuario.toEntity(requestDTO);
-        usuario.setSenha(senhaCriptografada);
+        usuario.setSenha(passwordEncoder.encode(requestDTO.senha()));
         return usuarioRepository.save(usuario);
     }
 
-    public Optional<Usuario> buscarPorId(Integer id){
-        return usuarioRepository.findById(id);
+    public Usuario buscarPorId(Integer id){
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));
     }
 
     public void atualizar(Usuario usuario){
         if(usuario.getId() == null){
-            throw new IllegalArgumentException("Usuário não encontrado");
+            throw new RegistroNaoEncontradoException("Usuário não encontrado!");
         }
-        if (usuarioRepository.existsByEmail(usuario.getEmail())){
+        validarDuplicidade(usuario.getEmail(), usuario.getUsername(), usuario.getId());
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        usuarioRepository.save(usuario);
+    }
+
+    public void excluir(Usuario usuario){
+        if (usuario.getId() == null){
+            throw new RegistroNaoEncontradoException("Usuário não encontrado!");
+        }
+        usuarioRepository.deleteById(usuario.getId());
+    }
+
+    private void validarDuplicidade(String email, String username, Integer idIgnorado) {
+        if (usuarioRepository.existsByEmailAndIdNot(email, idIgnorado)) {
             throw new RegistroDuplicadoException("Já existe um usuário com este email!");
         }
-
-        if (usuarioRepository.existsByUsername(usuario.getUsername())){
+        if (usuarioRepository.existsByUsernameAndIdNot(username, idIgnorado)) {
             throw new RegistroDuplicadoException("Já existe um usuário com este username!");
         }
-        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
-        usuario.setSenha(senhaCriptografada);
-        usuarioRepository.save(usuario);
     }
 }

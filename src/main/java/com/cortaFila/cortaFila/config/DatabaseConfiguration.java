@@ -43,7 +43,7 @@ public class DatabaseConfiguration {
 
         config.setMaximumPoolSize(10); //máximo de conexões liberadas
         config.setMinimumIdle(1); //tamanho inicial do pool
-        config.setPoolName("estoque-db-pool");
+        config.setPoolName("cortafila-db-pool");
         config.setMaxLifetime(600000); //600 mil ms (10 minutos)
         config.setConnectionTimeout(100000); //100 mil ms
         config.setConnectionTestQuery("select 1"); //query de teste

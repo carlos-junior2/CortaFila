@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +18,7 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+    //Método para cadastrar um novo cliente
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> salvarUsuario(@RequestBody UsuarioRequestDTO dto){
         Usuario usuario = usuarioService.salvar(dto);
@@ -27,15 +27,11 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(responseDTO);
     }
 
+    //Método para atualizar um cliente via ID
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable("id") Integer id, @RequestBody UsuarioRequestDTO usuarioRequestDTO){
-        Optional<Usuario> usuarioOptional = usuarioService.buscarPorId(id);
+    public ResponseEntity<Void> atualizarUsuario(@PathVariable("id") Integer id, @RequestBody UsuarioRequestDTO usuarioRequestDTO){
+        Usuario usuario = usuarioService.buscarPorId(id);
 
-        if (usuarioOptional.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-
-        Usuario usuario = usuarioOptional.get();
         usuario.setNome(usuarioRequestDTO.nome());
         usuario.setEmail(usuarioRequestDTO.email());
         usuario.setSenha(usuarioRequestDTO.senha());
@@ -46,4 +42,11 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    //Método para excluir um cliente via ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable("id") Integer id){
+        Usuario usuario = usuarioService.buscarPorId(id);
+        usuarioService.excluir(usuario);
+        return ResponseEntity.ok().build();
+    }
 }
