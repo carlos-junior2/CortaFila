@@ -1,12 +1,10 @@
 package com.cortaFila.cortaFila.data.model;
 
-import com.cortaFila.cortaFila.data.dto.LoginRequestDTO;
 import com.cortaFila.cortaFila.data.dto.UsuarioRequestDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table(name= "usuario", uniqueConstraints = {

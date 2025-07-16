@@ -11,7 +11,7 @@ create table barbearias (
 	id  INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	nome VARCHAR(100) NOT NULL,
     descricao TEXT,
-	email VARCHAR(100) NOT NULL UNIQUE,
+	email VARCHAR(100) UNIQUE,
     imagem_patch VARCHAR(255),
 	criado_em DATETIME,
 	atualizado_em DATETIME
