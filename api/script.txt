@@ -6,3 +6,26 @@ CREATE TABLE usuario (
   senha varchar(100) NOT NULL,
   role varchar(20) NOT NULL
 );
+
+create table barbearias (
+	id  INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+	email VARCHAR(100) NOT NULL UNIQUE,
+    imagem_patch VARCHAR(255),
+	criado_em DATETIME,
+	atualizado_em DATETIME
+);
+
+CREATE TABLE enderecos (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    barbearia_id INT,
+	logradouro VARCHAR(255),
+    bairro VARCHAR(100),
+	cidade VARCHAR(100),
+	estado VARCHAR(2),
+    cep VARCHAR(10),
+    ponto_de_referencia VARCHAR(255),
+  	telefone VARCHAR(20),
+    FOREIGN KEY(barbearia_id) REFERENCES barbearias(id)
+);
