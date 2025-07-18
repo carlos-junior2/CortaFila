@@ -26,4 +26,9 @@ public record EnderecoDTO(
         endereco.setTelefone(telefone);
         return endereco;
     }
+
+    public boolean temDadosValidos() {
+        return cep != null && !cep.isBlank();
+    }
+
 }

@@ -18,7 +18,7 @@ public record BarbeariaResponseDTO(
                 b.getDescricao(),
                 b.getEmail(),
                 b.getImagemPatch(),
-                new EnderecoDTO(endereco)
+                endereco != null ? new EnderecoDTO(endereco) : null
         );
     }
 }
