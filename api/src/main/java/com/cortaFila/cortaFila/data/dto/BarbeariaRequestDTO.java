@@ -9,19 +9,21 @@ public record BarbeariaRequestDTO(
         String email,
         String imagemPatch,
         EnderecoDTO endereco
-){
-    public Barbearia toEntity(){
+) {
+    public Barbearia toEntity() {
         Barbearia barbearia = new Barbearia();
         barbearia.setNome(this.nome());
         barbearia.setEmail(this.email());
         barbearia.setDescricao(this.descricao());
         barbearia.setImagemPatch(this.imagemPatch());
 
-        if(this.endereco() != null){
+        if (this.endereco() != null && this.endereco().temDadosValidos()) {
             Endereco enderecoEntity = this.endereco().toEntity();
             enderecoEntity.setBarbearia(barbearia);
+            barbearia.getEnderecos().add(enderecoEntity);
         }
 
         return barbearia;
     }
 }
+

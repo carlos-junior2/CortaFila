@@ -27,6 +27,18 @@ public record EnderecoDTO(
         return endereco;
     }
 
+    public static EnderecoDTO fromEntity(Endereco endereco) {
+        return new EnderecoDTO(
+                endereco.getLogradouro(),
+                endereco.getBairro(),
+                endereco.getCidade(),
+                endereco.getEstado(),
+                endereco.getCep(),
+                endereco.getPontoDeReferencia(),
+                endereco.getTelefone()
+        );
+    }
+
     public boolean temDadosValidos() {
         return cep != null && !cep.isBlank();
     }
