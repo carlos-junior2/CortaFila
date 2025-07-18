@@ -1,0 +1,7 @@
+Tipos de acesso
+
+Admin: tem todos os privilégios.
+
+Admin Barbearia: tem todos os privilégios de barbeiro e consegue cadastrar e excluir barbeiros em sua barbearia. Terá acesso ao dashboard geral da barbearia.
+Barbeiro (Mod): consegue cadastrar horário e cancelar agendamento, alterar horário, preço de serviços. Terá acesso ao dashboard pessoal. Terá acesso a uma página que mostra todos os agendamento diários.
+Usuário: Login no sistema, personalizar seu usuário, agendar horário, cancelar horário com prazo definido pelo admin da barbearia. Pode também navegar pelas barbearias do sistema (Caso não acesse pelo link personalizado.)
