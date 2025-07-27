@@ -1,5 +1,9 @@
 import { useState } from "react";
+import { login } from "../../../auth/AuthLogin";
+import { Link, useNavigate } from 'react-router-dom';
+import { ROUTES } from "../../../routes/constantsRoutes";
 import './LoginForm.css'
+import { validateEmail } from "../../../utils/validations";
 
 /**
  * Componente responsável por renderizar o formulário de login do sistema.
@@ -19,19 +23,43 @@ import './LoginForm.css'
 
 
 const LoginForm = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [senha, setSenha] = useState('');
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log('handleSubmit foi chamado');
+
+        if (!username.trim() || !senha.trim()) {
+            setError("Preencha todos os campos.")
+            return;
+        }
+
+        try {
+            const token = await login(username, senha);
+            localStorage.setItem('authToken', token);
+
+            console.log('Login bem-sucedido, redirecionando...');
+
+            navigate('/');
+        } catch (error) {
+            setError("Erro ao fazer login");
+        }
+
+    }
 
     return (
         <>
-            <form className="form">
+            <form className="form" onSubmit={handleSubmit}>
                 <h2>Seja bem-vindo</h2>
                 <div className="form-group">
                     <input
-                        type="email"
-                        placeholder="E-mail"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         className="input-form"
                         required
                     />
