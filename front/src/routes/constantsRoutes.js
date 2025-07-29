@@ -3,7 +3,7 @@
 export const ROUTES = {
     /* Rotas públicas */
     HOME: '/',
-    LOGIN: '/login',
+    LOGIN: '/auth/login',
     INDEX: '/index',
   
     /* Rotas protegidas */
