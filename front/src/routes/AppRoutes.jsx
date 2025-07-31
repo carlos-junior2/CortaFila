@@ -6,6 +6,7 @@ import { ROUTES } from './constantsRoutes';
 /* Paginas publicas */
 import Login from '../pages/public/Login/Login';
 import Index from '../pages/public/Index/Index';
+import Home from '../pages/public/home/Home';
 
 export default function AppRoutes() {
     return (
@@ -13,6 +14,7 @@ export default function AppRoutes() {
             {/* Rotas públicas */}
             <Route path={ROUTES.INDEX} element={<Index />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
+            <Route path={ROUTES.HOME} element={<Home />} />
         </Routes>
     );
 }
