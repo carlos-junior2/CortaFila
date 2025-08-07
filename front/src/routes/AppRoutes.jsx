@@ -7,6 +7,7 @@ import { ROUTES } from './constantsRoutes';
 import Login from '../pages/public/Login/Login';
 import Index from '../pages/public/Index/Index';
 import Home from '../pages/public/home/Home';
+import NovoAgendamento from '../pages/private/NovoAgendamento/NovoAgendamento';
 
 export default function AppRoutes() {
     return (
@@ -15,6 +16,9 @@ export default function AppRoutes() {
             <Route path={ROUTES.INDEX} element={<Index />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.HOME} element={<Home />} />
+
+            {/* Rotas privadas */}
+            <Route path={ROUTES.AGENDAMENTO} element={<NovoAgendamento />} />
         </Routes>
     );
 }

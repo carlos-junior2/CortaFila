@@ -33,7 +33,7 @@ import './home.css';
 const Home = () => {
     return (
         <>
-            <Header />
+            <Header titulo="Bem vindo!" />
             <Container>
                 <Card />
                 <section class="barbers">

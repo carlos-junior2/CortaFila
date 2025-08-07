@@ -23,10 +23,10 @@ import './Header.css';
  */
 
 
-const Header = () => {
+const Header = ({ titulo }) => {
     return (
         <div className='card-header'>
-            <h1>Bem-vindo!</h1>
+            <h1>{titulo}</h1>
         </div>
 
     )

@@ -1,0 +1,20 @@
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-label {
+    font-size: 1.8em;
+    font-family: 'Roboto';
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+button,
+select {
+    text-transform: none;
+    font-family: 'Roboto';
+    font-size: 1.4em;
+    padding: 4px;
+    width: 100%;
+}
