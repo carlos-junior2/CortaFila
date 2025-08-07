@@ -1,5 +1,6 @@
 package com.cortaFila.cortaFila.controller;
 
+import com.cortaFila.cortaFila.data.dto.BarbeariaComBarbeiroDTO;
 import com.cortaFila.cortaFila.data.dto.BarbeariaRequestDTO;
 import com.cortaFila.cortaFila.data.dto.BarbeariaResponseDTO;
 import com.cortaFila.cortaFila.data.model.Barbearia;
@@ -28,5 +29,16 @@ public class BarbeariaController {
     public ResponseEntity<List<BarbeariaResponseDTO>> listarTodas() {
         List<BarbeariaResponseDTO> barbearias = barbeariaService.listar();
         return ResponseEntity.ok(barbearias);
+    }
+
+    @GetMapping("/barbeiros")
+    public ResponseEntity<List<BarbeariaComBarbeiroDTO>> listarTodasComBarbeiros(){
+        var lista = barbeariaService.listarComBarbeiros();
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/teste-publico")
+    public String teste() {
+        return "acesso liberado";
     }
 }

@@ -20,6 +20,10 @@ spring:
         jdbc:
           time_zone: America/Sao_Paulo
 
+logging:
+  level:
+    org.springframework.security: DEBUG
+
 api:
   security:
     token:

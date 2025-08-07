@@ -13,4 +13,7 @@ public interface BarbeariaRepository extends JpaRepository<Barbearia, Long> {
     @Query("SELECT DISTINCT b FROM Barbearia b LEFT JOIN FETCH b.enderecos")
     List<Barbearia> findAllComEnderecos();
 
+    @Query("SELECT DISTINCT b FROM Barbearia b LEFT JOIN FETCH b.barbeiros")
+    List<Barbearia> findAllComBarbeiros();
+
 }

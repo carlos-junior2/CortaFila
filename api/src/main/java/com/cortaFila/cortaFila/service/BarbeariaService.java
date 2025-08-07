@@ -1,8 +1,6 @@
 package com.cortaFila.cortaFila.service;
 
-import com.cortaFila.cortaFila.data.dto.BarbeariaRequestDTO;
-import com.cortaFila.cortaFila.data.dto.BarbeariaResponseDTO;
-import com.cortaFila.cortaFila.data.dto.EnderecoDTO;
+import com.cortaFila.cortaFila.data.dto.*;
 import com.cortaFila.cortaFila.data.model.Barbearia;
 import com.cortaFila.cortaFila.data.model.Endereco;
 import com.cortaFila.cortaFila.exception.RegistroDuplicadoException;
@@ -55,6 +53,42 @@ public class BarbeariaService {
                             enderecosDTO
                     );
                 }).collect(Collectors.toList());
+    }
+
+    public List<BarbeariaComBarbeiroDTO> listarComBarbeiros() {
+        List<Barbearia> barbearias = barbeariaRepository.findAllComBarbeiros();
+
+        return barbearias.stream()
+                .map(b -> new BarbeariaComBarbeiroDTO(
+                        b.getId(),
+                        b.getNome(),
+                        b.getDescricao(),
+                        b.getEmail(),
+                        b.getImagemPatch(),
+                        // Mapear lista de Endereco para lista de EnderecoDTO
+                        b.getEnderecos().stream()
+                                .map(e -> new EnderecoDTO(
+                                        e.getLogradouro(),
+                                        e.getBairro(),
+                                        e.getCidade(),
+                                        e.getEstado(),
+                                        e.getCep(),
+                                        e.getPontoDeReferencia(),
+                                        e.getTelefone()
+                                ))
+                                .toList(),
+                        // Mapear lista de Barbeiro para lista de BarbeiroResponseDTO
+                        b.getBarbeiros().stream()
+                                .map(barbeiro -> new BarbeiroResponseDTO(
+                                        barbeiro.getId(),
+                                        barbeiro.getUsuario().getId(),
+                                        barbeiro.getUsuario().getNome(),
+                                        barbeiro.getBarbearia().getId(),
+                                        barbeiro.getBarbearia().getNome()
+                                ))
+                                .toList()
+                ))
+                .toList();
     }
 
     private void validarDuplicidade(String email, Long id) {

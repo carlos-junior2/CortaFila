@@ -44,4 +44,7 @@ public class Barbearia {
     @OneToMany(mappedBy = "barbearia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Endereco> enderecos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "barbearia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Barbeiro> barbeiros = new ArrayList<>();
+
 }
