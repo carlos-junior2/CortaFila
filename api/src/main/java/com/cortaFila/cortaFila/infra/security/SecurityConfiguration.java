@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST,"/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/enderecos/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/barbeiros/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/barbearias/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/barbearias/barbeiros").permitAll()
                         .requestMatchers(HttpMethod.POST,"/barbearias/**").permitAll()
 
                         .anyRequest().authenticated()

@@ -1,33 +1,24 @@
 import axios from 'axios';
 
-export function buscarBarbearia() {
-
-  return [
-    { id: 1, nome: 'Barbearia do João' },
-    { id: 2, nome: 'Studio Barbers' },
-    { id: 3, nome: 'Barber King' }
-
-    ]
-
+export async function buscarBarbearia() {
+  try {
+    const response = await axios.get('http://localhost:8080/barbearias/barbeiros');
+    return response.data;
+  } catch (error) {
+    console.log('Erro ao buscar barbearias:', error);
+    throw error;
+  }
 }
 
-export function buscarBarbeirosPorBarbearia(idBarbearia) {
-  const barbeirosPorBarbearia = {
-    1: [
-      { id: 10, nome: 'João' },
-      { id: 11, nome: 'Carlos' }
-    ],
-    2: [
-      { id: 20, nome: 'Lucas' },
-      { id: 21, nome: 'Pedro' }
-    ],
-    3: [
-      { id: 30, nome: 'Henrique' }
-    ]
-  };
-
-  return barbeirosPorBarbearia[idBarbearia] || [];
+export async function buscarBarbeirosPorBarbearia(idBarbearia) {
+  const lista = await buscarBarbearia();
+  const barbearia = lista.find(b => b.id === Number(idBarbearia));
+  if (!barbearia) {
+    throw new Error(`Barbearia com id ${idBarbearia} não encontrada.`);
+  }
+  return barbearia.barbeiros;
 }
+
 
 export function buscarServicos(idBarbeiro) {
 
