@@ -1,0 +1,19 @@
+.header-feed {
+    background-color: #eaeaea;
+    font-size: 1.3em;
+    padding: 15px;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-feed h1 {
+    font-family: 'Roboto';
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.header-feed img {
+    width: 35px;
+    height: 35px;
+}

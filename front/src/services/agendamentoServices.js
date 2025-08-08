@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function buscarBarbearia() {
   try {
-    const response = await axios.get('http://localhost:8080/barbearias/barbeiros');
+    const response = await axios.get('http://192.168.0.106:8080/barbearias/barbeiros');
     return response.data;
   } catch (error) {
     console.log('Erro ao buscar barbearias:', error);

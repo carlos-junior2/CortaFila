@@ -6,6 +6,7 @@ export const ROUTES = {
     LOGIN: '/auth/login',
     INDEX: '/index',
     FEED: '/feed',
+    BARBER: '/barbearia/:id',
   
     /* Rotas protegidas */
     CADASTRAR_BARBEARIA: '/cadastrar/barbearia',
