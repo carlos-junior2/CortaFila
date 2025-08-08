@@ -1,0 +1,34 @@
+.search-container {
+    padding: 1rem;
+    background: #eaeaea;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 2rem;
+    /* espaço para a lupa */
+    background: #fff url('https://cdn-icons-png.flaticon.com/512/622/622669.png') no-repeat 8px center;
+    background-size: 16px;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    font-family: 'Roboto';
+    font-size: 1.2em;
+}
+
+.filters {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #eaeaea;
+    overflow-x: auto;
+}
+
+.filters button {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background: #eee;
+    cursor: pointer;
+    height: 30px;
+    font-size: 15px;
+    white-space: nowrap;
+}
