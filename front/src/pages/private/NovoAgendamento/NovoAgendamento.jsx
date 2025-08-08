@@ -79,7 +79,7 @@ const NovoAgendamento = () => {
                             <option>Selecione um barbeiro</option>
                             {barbeiros.map((barbeiro) => (
                                 <option key={barbeiro.id} value={barbeiro.id}>
-                                    {barbeiro.nome}
+                                    {barbeiro.nomeUsuario}
                                 </option>
                             ))}
                         </select>
@@ -99,7 +99,7 @@ const NovoAgendamento = () => {
                             <option>Selecione um serviço</option>
                             {servicos.map((servico) => (
                                 <option key={servico.id} value={servico.id}>
-                                    {servico.tipo}
+                                    {servico.tipo + ' R$:' + servico.valor}
                                 </option>
                             ))}
                         </select>
