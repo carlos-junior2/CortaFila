@@ -4,6 +4,7 @@ import Container from "../../../components/common/Container/Container";
 import { buscarBarbearia, buscarBarbeirosPorBarbearia, buscarServicos } from "../../../services/agendamentoServices";
 import './NovoAgendamento.css';
 import { useState, useEffect } from "react";
+import { ROUTES } from "../../../routes/constantsRoutes";
 
 const NovoAgendamento = () => {
 
@@ -35,7 +36,7 @@ const NovoAgendamento = () => {
 
     return (
         <>
-            <ArrowReturn />
+            <ArrowReturn route={ROUTES.HOME} />
             <Header titulo="Novo Agendamento" />
             <Container >
                 <div className="form-group">
