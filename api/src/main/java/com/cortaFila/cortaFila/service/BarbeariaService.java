@@ -4,6 +4,7 @@ import com.cortaFila.cortaFila.data.dto.*;
 import com.cortaFila.cortaFila.data.model.Barbearia;
 import com.cortaFila.cortaFila.data.model.Endereco;
 import com.cortaFila.cortaFila.exception.RegistroDuplicadoException;
+import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.repository.BarbeariaRepository;
 import com.cortaFila.cortaFila.repository.EnderecoRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,40 @@ public class BarbeariaService {
 
     public Optional<Barbearia> buscarPorId(Long id){
         return barbeariaRepository.findById(id);
+    }
+
+    public BarbeariaComBarbeiroDTO buscarBarbeariaPorId(Long id){
+        Barbearia barbearia = barbeariaRepository.findByIdComBarbeiros(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Barbearia não encontrada!"));
+
+        return new BarbeariaComBarbeiroDTO(
+                barbearia.getId(),
+                barbearia.getNome(),
+                barbearia.getDescricao(),
+                barbearia.getEmail(),
+                barbearia.getImagemPatch(),
+                barbearia.getEnderecos().stream()
+                        .map(e -> new EnderecoDTO(
+                                e.getLogradouro(),
+                                e.getBairro(),
+                                e.getCidade(),
+                                e.getEstado(),
+                                e.getCep(),
+                                e.getPontoDeReferencia(),
+                                e.getTelefone()
+                        ))
+                        .toList(),
+
+                barbearia.getBarbeiros().stream()
+                        .map(b -> new BarbeiroResponseDTO(
+                                b.getId(),
+                                b.getUsuario().getId(),
+                                b.getUsuario().getNome(),
+                                b.getBarbearia().getId(),
+                                b.getBarbearia().getNome()
+                        ))
+                        .toList()
+        );
     }
 
     public List<BarbeariaResponseDTO> listar(){

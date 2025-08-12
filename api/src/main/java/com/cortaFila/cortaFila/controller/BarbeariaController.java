@@ -37,6 +37,12 @@ public class BarbeariaController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<BarbeariaComBarbeiroDTO> buscarBarbeariaPorId(@PathVariable Long id){
+        BarbeariaComBarbeiroDTO dto = barbeariaService.buscarBarbeariaPorId(id);
+        return ResponseEntity.ok(dto);
+    }
+
     @GetMapping("/teste-publico")
     public String teste() {
         return "acesso liberado";
