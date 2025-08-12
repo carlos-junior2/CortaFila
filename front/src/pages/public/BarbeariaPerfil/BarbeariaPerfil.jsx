@@ -1,30 +1,30 @@
 import ArrowReturn from "../../../components/common/ArrowReturn/ArrowReturn";
 import PublicHeader from "../../../components/common/PublicHeader/PublicHeader";
-import { buscarBarbearia } from "../../../services/agendamentoServices";
+import { buscarBarbeariaPorId } from "../../../services/agendamentoServices";
 import { ROUTES } from "../../../routes/constantsRoutes";
 import favoritos from "../../../assets/favoritos.png";
 import './BarbeariaPerfil.css';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const BarbeariaPerfil = () => {
-
+    const { id } = useParams();
+    const [barbearia, setBarbearia] = useState(null)
     const [carregandoBarbearia, setCarregandoBarbearia] = useState(false);
 
     useEffect(() => {
-        async function carregarBarbearia() {
-            setCarregandoBarbearia(true);
+        async function carregar() {
             try {
-                const lista = await buscarBarbearia();
-                setBarbearia(lista);
-            } catch (err) {
-                console.error('Erro ao carregar barbeiros:', err);
+                const dados = await buscarBarbeariaPorId(id);
+                setBarbearia(dados);
+            } catch (error) {
+                console.log(error);
             } finally {
                 setCarregandoBarbearia(false);
             }
         }
-
-        carregarBarbearia();
-    }, []);
+        carregar();
+    }, [id])
 
     return (
         <>
@@ -37,8 +37,8 @@ const BarbeariaPerfil = () => {
                     {carregandoBarbearia ? (
                         <p>Carregando barbearia...</p>
                     ) : (
-                        <div>
-
+                        <div className="perfil-barbearia">
+                            <h1>{barbearia.nome}</h1>
                         </div>
                     )}
                 </div>

@@ -38,7 +38,6 @@ const Feed = () => {
     }
 
     function selecionarBarbearia(id) {
-        console.log("ID selecionado:", id);
         navigate(`/barbearia/${id}`); // leva para tela de perfil
     }
 
