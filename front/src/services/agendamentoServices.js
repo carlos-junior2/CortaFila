@@ -10,6 +10,16 @@ export async function buscarBarbearia() {
   }
 }
 
+export async function buscarBarbeariaPorId(id) {
+  try {
+    const response = await axios.get(`http://192.168.0.106:8080/barbearias/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar barbearia por ID:', error);
+    throw error;
+  }
+}
+
 export async function buscarBarbeirosPorBarbearia(idBarbearia) {
   const lista = await buscarBarbearia();
   const barbearia = lista.find(b => b.id === Number(idBarbearia));
@@ -53,3 +63,4 @@ export function buscarServicos(idBarbeiro) {
 
   return servicosPorBarbeiro[idBarbeiro] || [];
 }
+
