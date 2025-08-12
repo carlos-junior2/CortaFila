@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/usuarios/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/enderecos/**").permitAll()
@@ -39,10 +40,11 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST,"/barbearias/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/tipoServicos/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/barbeiroServicos/**").permitAll()
+                        .requestMatchers("/error").permitAll()
 
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

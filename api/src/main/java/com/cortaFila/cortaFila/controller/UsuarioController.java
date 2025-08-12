@@ -5,6 +5,7 @@ import com.cortaFila.cortaFila.data.dto.UsuarioRequestDTO;
 import com.cortaFila.cortaFila.data.dto.UsuarioResponseDTO;
 import com.cortaFila.cortaFila.data.model.Usuario;
 import com.cortaFila.cortaFila.service.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UsuarioController {
 
     //Método para cadastrar um novo cliente
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> salvarUsuario(@RequestBody UsuarioRequestDTO dto){
+    public ResponseEntity<UsuarioResponseDTO> salvarUsuario(@Valid @RequestBody UsuarioRequestDTO dto){
         Usuario usuario = usuarioService.salvar(dto);
         UsuarioResponseDTO responseDTO = new UsuarioResponseDTO(usuario);
         URI uri = URI.create("/" + responseDTO.id());
@@ -29,7 +30,7 @@ public class UsuarioController {
 
     //Método para atualizar um cliente via ID
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizarUsuario(@PathVariable("id") Long id, @RequestBody UsuarioRequestDTO usuarioRequestDTO){
+    public ResponseEntity<Void> atualizarUsuario(@Valid @PathVariable("id") Long id, @RequestBody UsuarioRequestDTO usuarioRequestDTO){
         Usuario usuario = usuarioService.buscarPorId(id);
 
         usuario.setNome(usuarioRequestDTO.nome());
