@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/barbearias/barbeiros").permitAll()
                         .requestMatchers(HttpMethod.POST,"/barbearias/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/tipoServicos/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/barbeiroServicos/**").permitAll()
 
                         .anyRequest().authenticated()
                 )

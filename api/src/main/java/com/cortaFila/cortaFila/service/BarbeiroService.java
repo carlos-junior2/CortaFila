@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+
 @Service
 @RequiredArgsConstructor
 public class BarbeiroService {
@@ -18,6 +20,11 @@ public class BarbeiroService {
     private final BarbeiroRepository barbeiroRepository;
     private final UsuarioService usuarioService;
     private final BarbeariaRepository barbeariaRepository;
+
+    public Barbeiro buscarPorId(Long id){
+        return barbeiroRepository.findById(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Barbeiro não encontrado!"));
+    }
 
     @Transactional
     public BarbeiroResponseDTO salvar(BarbeiroRequestDTO dto){
