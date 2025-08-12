@@ -51,3 +51,44 @@ CREATE TABLE barbeiros (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+CREATE TABLE tipo_servico (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    descricao VARCHAR(255),
+    criado_em DATETIME,
+	atualizado_em DATETIME
+);
+
+CREATE TABLE barbeiro_servico (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_barbeiro INT NOT NULL,
+    id_tipo_servico INT NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    duracao_min INT NOT NULL,
+    criado_em DATETIME,
+	atualizado_em DATETIME,
+    CONSTRAINT fk_barbeiro
+        FOREIGN KEY (id_barbeiro)
+        REFERENCES barbeiros(id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_tipo_servico
+        FOREIGN KEY (id_tipo_servico)
+        REFERENCES tipo_servico(id)
+        ON DELETE CASCADE,
+    CONSTRAINT uq_barbeiro_servico UNIQUE (id_barbeiro, id_tipo_servico)
+);
+
+//insert de dados para a tabela tipo_servico
+INSERT INTO tipo_servico (nome, descricao, criado_em, atualizado_em) VALUES
+('Corte de Cabelo', 'Corte de cabelo masculino com tesoura ou máquina', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Corte + Barba', 'Corte de cabelo e aparo/contorno da barba', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Barba', 'Aparo, desenho e alinhamento da barba', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Sobrancelha', 'Design de sobrancelha masculina', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Corte Infantil', 'Corte de cabelo para crianças até 12 anos', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Corte Social', 'Corte clássico e alinhado', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Corte Fade', 'Corte degradê moderno', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Corte Militar', 'Corte baixo, estilo militar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Tratamento Capilar', 'Hidratação, massagem e fortalecimento dos fios', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Camuflagem de Fios Brancos', 'Tintura ou tonalizante para disfarçar fios brancos', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Penteado e Finalização', 'Modelagem do cabelo com pomada, gel ou spray', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
