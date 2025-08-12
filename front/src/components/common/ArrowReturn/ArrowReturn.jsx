@@ -1,11 +1,10 @@
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { ROUTES } from '../../../routes/constantsRoutes';
 import './ArrowReturn.css';
 
-const ArrowReturn = () => {
+const ArrowReturn = ({ route }) => {
     return (
-        <Link to={ROUTES.HOME}>
+        <Link to={route}>
             <button className='arrow-return'>
                 <FaArrowLeft />
             </button>

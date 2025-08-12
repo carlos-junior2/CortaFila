@@ -1,0 +1,15 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 30px;
+}
+
+.header-container img {
+    height: 30px;
+    width: 30px;
+}
+
+.header-container svg {
+    height: 30px;
+    width: 30px;
+}
