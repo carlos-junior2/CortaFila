@@ -2,11 +2,18 @@ package com.cortaFila.cortaFila.data.dto;
 
 import com.cortaFila.cortaFila.data.model.Barbearia;
 import com.cortaFila.cortaFila.data.model.Endereco;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 public record BarbeariaRequestDTO(
+        @NotBlank(message = "Nome não pode estar vazio")
         String nome,
+
         String descricao,
+
+        @Email(message = "Email inválido")
         String email,
+
         String imagemPatch,
         EnderecoDTO endereco
 ) {

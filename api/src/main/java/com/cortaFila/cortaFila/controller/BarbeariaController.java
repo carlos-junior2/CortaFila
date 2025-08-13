@@ -5,6 +5,7 @@ import com.cortaFila.cortaFila.data.dto.BarbeariaRequestDTO;
 import com.cortaFila.cortaFila.data.dto.BarbeariaResponseDTO;
 import com.cortaFila.cortaFila.data.model.Barbearia;
 import com.cortaFila.cortaFila.service.BarbeariaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,9 @@ public class BarbeariaController {
     private final BarbeariaService barbeariaService;
 
     @PostMapping
-    public ResponseEntity<Barbearia> criarBarbearia(@RequestBody BarbeariaRequestDTO barbeariaRequestDTO){
-        barbeariaService.salvar(barbeariaRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<BarbeariaResponseDTO> criarBarbearia(@Valid @RequestBody BarbeariaRequestDTO barbeariaRequestDTO){
+        BarbeariaResponseDTO dto = barbeariaService.salvar(barbeariaRequestDTO);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping

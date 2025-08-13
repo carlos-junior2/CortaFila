@@ -3,6 +3,7 @@ package com.cortaFila.cortaFila.controller;
 import com.cortaFila.cortaFila.data.dto.BarbeiroRequestDTO;
 import com.cortaFila.cortaFila.data.dto.BarbeiroResponseDTO;
 import com.cortaFila.cortaFila.service.BarbeiroService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class BarbeiroController {
     private final BarbeiroService barbeiroService;
 
     @PostMapping
-    public ResponseEntity<BarbeiroResponseDTO> salvar(@RequestBody BarbeiroRequestDTO dto){
+    public ResponseEntity<BarbeiroResponseDTO> salvar(@Valid @RequestBody BarbeiroRequestDTO dto){
         return ResponseEntity.ok(barbeiroService.salvar(dto));
     }
 }
