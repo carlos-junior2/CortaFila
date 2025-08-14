@@ -92,3 +92,28 @@ INSERT INTO tipo_servico (nome, descricao, criado_em, atualizado_em) VALUES
 ('Tratamento Capilar', 'Hidratação, massagem e fortalecimento dos fios', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Camuflagem de Fios Brancos', 'Tintura ou tonalizante para disfarçar fios brancos', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Penteado e Finalização', 'Modelagem do cabelo com pomada, gel ou spray', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+CREATE TABLE horario_trabalho (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_barbeiro INT NOT NULL,
+    dia_semana VARCHAR(20) NOT NULL,
+    hora_inicio TIME NOT NULL,
+    hora_fim TIME NOT NULL,
+
+    CONSTRAINT fk_horario_barbeiro FOREIGN KEY (id_barbeiro)
+        REFERENCES barbeiros(id) ON DELETE CASCADE
+);
+
+//Insert para tabela de horarios de trabalho
+INSERT INTO horario_trabalho (id_barbeiro, dia_semana, hora_inicio, hora_fim) VALUES
+(1, 'SEGUNDA', '08:00', '12:00'),
+(1, 'SEGUNDA', '13:00', '17:00'),
+(1, 'TERÇA', '08:00', '12:00'),
+(1, 'TERÇA', '13:00', '17:00'),
+(1, 'QUARTA', '08:00', '12:00'),
+(1, 'QUARTA', '13:00', '17:00'),
+(1, 'QUINTA', '08:00', '12:00'),
+(1, 'QUINTA', '13:00', '17:00'),
+(1, 'SEXTA', '08:00', '12:00'),
+(1, 'SEXTA', '13:00', '17:00'),
+(1, 'SABADO', '08:00', '12:00');

@@ -18,7 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -121,7 +120,10 @@ public class BarbeariaService {
                                 b.getUsuario().getId(),
                                 b.getUsuario().getNome(),
                                 b.getBarbearia().getId(),
-                                b.getBarbearia().getNome()
+                                b.getBarbearia().getNome(),
+                                b.getHorarios().stream()
+                                        .map(HorarioTrabalhoDTO::fromEntity)
+                                        .toList()
                         ))
                         .toList()
         );
@@ -176,7 +178,10 @@ public class BarbeariaService {
                                         barbeiro.getUsuario().getId(),
                                         barbeiro.getUsuario().getNome(),
                                         barbeiro.getBarbearia().getId(),
-                                        barbeiro.getBarbearia().getNome()
+                                        barbeiro.getBarbearia().getNome(),
+                                        barbeiro.getHorarios().stream()
+                                                .map(HorarioTrabalhoDTO::fromEntity)
+                                                .toList()
                                 ))
                                 .toList()
                 ))
