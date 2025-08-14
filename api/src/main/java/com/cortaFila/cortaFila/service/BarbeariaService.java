@@ -75,10 +75,19 @@ public class BarbeariaService {
     }
 
     public String obterPathImagem(Long id) {
-        return barbeariaRepository.findById(id)
-                .map(Barbearia::getImagemPatch)
+        Barbearia barbearia = barbeariaRepository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Barbearia não encontrada"));
+
+        String imagemPatch = barbearia.getImagemPatch();
+
+        if (imagemPatch == null || imagemPatch.isBlank()) {
+            // Caminho base da imagem padrão
+            return "/uploads/default/perfil.png";
+        }
+
+        return imagemPatch;
     }
+
 
     public Optional<Barbearia> buscarPorId(Long id){
         return barbeariaRepository.findById(id);
