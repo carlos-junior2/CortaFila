@@ -9,9 +9,16 @@ import com.cortaFila.cortaFila.repository.BarbeariaRepository;
 import com.cortaFila.cortaFila.repository.EnderecoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +38,47 @@ public class BarbeariaService {
         return new BarbeariaResponseDTO(barbeariaSalva, endereco);
     }
 
+    public String atualizarImagemPerfil(Long id, MultipartFile file) throws IOException {
+        Barbearia barbearia = barbeariaRepository.findById(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Barbearia não encontrada"));
+
+        // Deletar imagem antiga se existir
+        if (barbearia.getImagemPatch() != null) {
+            File antiga = new File("."+barbearia.getImagemPatch()); // adiciona "." para ser relativo à raiz do projeto
+            if (antiga.exists()) {
+                antiga.delete();
+            }
+        }
+
+        // Pasta física para salvar a imagem
+        String pastaFisica = "uploads/barbearias/" + id;
+        File dir = new File(pastaFisica);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        // Nome do novo arquivo
+        String nomeArquivo = "perfil_" + id + "_" + file.getOriginalFilename();
+
+        // Caminho físico onde será salvo
+        Path caminhoFisico = Paths.get(pastaFisica, nomeArquivo);
+        Files.write(caminhoFisico, file.getBytes());
+
+        // Caminho relativo que será salvo no banco e usado no front
+        String caminhoRelativo = "/uploads/barbearias/" + id + "/" + nomeArquivo;
+
+        // Atualiza no banco
+        barbearia.setImagemPatch(caminhoRelativo);
+        barbeariaRepository.save(barbearia);
+
+        return caminhoRelativo;
+    }
+
+    public String obterPathImagem(Long id) {
+        return barbeariaRepository.findById(id)
+                .map(Barbearia::getImagemPatch)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Barbearia não encontrada"));
+    }
 
     public Optional<Barbearia> buscarPorId(Long id){
         return barbeariaRepository.findById(id);
