@@ -1,7 +1,11 @@
+.container {
+    padding: 0px;
+}
+
 .header-container {
     display: flex;
     justify-content: space-between;
-    padding-top: 30px;
+    padding-top: 0px;
 }
 
 .header-container img {
@@ -12,4 +16,106 @@
 .header-container svg {
     height: 30px;
     width: 30px;
+}
+
+.perfil-barbearia {
+    margin: 10px;
+    margin-top: 8px;
+    font-family: 'Roboto';
+}
+
+.perfil-barbearia h1 {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.perfil-barbearia p {
+    font-size: 20px;
+    padding-bottom: 8px;
+}
+
+.perfil-barbearia span {
+    font-size: 18px;
+}
+
+
+.perfil-barbearia img {
+    width: 400px;
+    height: 280px;
+    border-radius: 20px;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.barbers-group img {
+    width: 50px;
+    height: 50px;
+}
+
+.barbers-group span {
+    text-align: center;
+    padding-left: 20px;
+}
+
+.barbers-group div {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px 5px 10px;
+}
+
+.barber-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.barber-info {
+    display: flex;
+    align-items: center;
+}
+
+.barber-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.footer-book {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.book-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.book-btn.disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.book-btn.enabled {
+    background: #28a745;
+    /* Verde */
+    color: white;
 }
