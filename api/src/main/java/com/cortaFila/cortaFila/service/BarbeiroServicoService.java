@@ -2,12 +2,15 @@ package com.cortaFila.cortaFila.service;
 
 import com.cortaFila.cortaFila.data.dto.BarbeiroServicoResponseDTO;
 import com.cortaFila.cortaFila.data.dto.BarbeiroServicoRequestDTO;
+import com.cortaFila.cortaFila.data.dto.BarbeiroServicoTipoServicoDTO;
 import com.cortaFila.cortaFila.data.model.Barbeiro;
 import com.cortaFila.cortaFila.data.model.BarbeiroServico;
 import com.cortaFila.cortaFila.data.model.TipoServico;
 import com.cortaFila.cortaFila.repository.BarbeiroServicoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +33,23 @@ public class BarbeiroServicoService {
         barbeiroServicoRepository.save(barbeiroServico);
 
         return new BarbeiroServicoResponseDTO(barbeiroServico);
+    }
+
+    public List<BarbeiroServicoTipoServicoDTO> buscarServicosPorIdBarbeiro(Long idBarbeiro){
+        //Para gerar exception, se for o caso
+        barbeiroService.buscarPorId(idBarbeiro);
+
+        return barbeiroServicoRepository.findByBarbeiroId(idBarbeiro)
+                .stream()
+                .map(sb -> new BarbeiroServicoTipoServicoDTO(
+                        sb.getId(),
+                        sb.getPreco(),
+                        sb.getDuracaoMin(),
+                        sb.getTipoServico().getId(),
+                        sb.getTipoServico().getNome(),
+                        sb.getTipoServico().getDescricao()
+                ))
+                .toList();
+
     }
 }
