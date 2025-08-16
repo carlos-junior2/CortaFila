@@ -2,9 +2,6 @@ import './Feed.css';
 import Footer from "../../../components/common/Footer/Footer";
 import HeaderFeed from "../../../components/public/HeaderFeed/HeaderFeed";
 import barberShop1 from "../../../assets/barberShop1.jpg";
-import barberShop2 from "../../../assets/barberShop2.jpg";
-import barberShop3 from "../../../assets/barberShop3.jpg";
-import barberShop4 from "../../../assets/barberShop4.jpg";
 import options from '../../../assets/options.png'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

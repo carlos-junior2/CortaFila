@@ -5,8 +5,12 @@ import { buscarBarbearia, buscarBarbeirosPorBarbearia, buscarServicos } from "..
 import './NovoAgendamento.css';
 import { useState, useEffect } from "react";
 import { ROUTES } from "../../../routes/constantsRoutes";
+import { useLocation } from "react-router-dom";
 
 const NovoAgendamento = () => {
+    const location = useLocation();
+    const barbeariaState = location.state?.barbearia;
+    const barbeiroState = location.state?.barbeiro;
 
     const [barbearias, setBarbearia] = useState([]);
     const [barbeariaSelecionada, setBarbeariaSelecionada] = useState('');
@@ -19,26 +23,41 @@ const NovoAgendamento = () => {
     const [servicoSelecionado, setServicoSelecionado] = useState('');
 
     useEffect(() => {
-        async function carregarBarbearia() {
+        async function carregarBarbearias() {
             setCarregandoBarbearia(true);
             try {
                 const lista = await buscarBarbearia();
                 setBarbearia(lista);
+
+                // Se veio da tela anterior, já seleciona a barbearia e busca barbeiros
+                if (barbeariaState) {
+                    setBarbeariaSelecionada(barbeariaState.id);
+                    const listaBarbeiros = await buscarBarbeirosPorBarbearia(barbeariaState.id);
+                    setBarbeiros(listaBarbeiros);
+
+                    // Se também veio barbeiro, já seleciona
+                    if (barbeiroState) {
+                        setBarbeiroSelecionado(barbeiroState.id);
+                        console.log(barbeiroSelecionado.horarios);
+                        const listaServicos = await buscarServicos(barbeiroState.id);
+                        setServicos(listaServicos);
+                    }
+                }
             } catch (err) {
-                console.error('Erro ao carregar barbeiros:', err);
+                console.error('Erro ao carregar barbearias:', err);
             } finally {
                 setCarregandoBarbearia(false);
             }
         }
 
-        carregarBarbearia();
-    }, []);
+        carregarBarbearias();
+    }, [barbeariaState, barbeiroState]);
 
     return (
         <>
             <ArrowReturn route={ROUTES.HOME} />
             <Header titulo="Novo Agendamento" />
-            <Container >
+            <Container>
                 <div className="form-group">
                     <label className="form-label">Barbearia</label>
                     {carregandoBarbearia ? (
@@ -52,6 +71,7 @@ const NovoAgendamento = () => {
                                 const listaBarbeiros = await buscarBarbeirosPorBarbearia(idBarbearia);
                                 setBarbeiros(listaBarbeiros);
                                 setBarbeiroSelecionado('');
+                                setServicos([]);
                             }}
                         >
                             <option>Selecione uma barbearia</option>
@@ -66,7 +86,7 @@ const NovoAgendamento = () => {
 
                 {barbeiros.length > 0 && (
                     <div className="form-group">
-                        <label className="form-label">Barbeiro</label>
+                        <label className="form-label">Profissional</label>
                         <select
                             value={barbeiroSelecionado}
                             onChange={async (e) => {
@@ -92,24 +112,18 @@ const NovoAgendamento = () => {
                         <label className="form-label">Serviços</label>
                         <select
                             value={servicoSelecionado}
-                            onChange={async (e) => {
-                                const idServico = e.target.value;
-                                setServicoSelecionado(idServico);
-                            }}
+                            onChange={(e) => setServicoSelecionado(e.target.value)}
                         >
                             <option>Selecione um serviço</option>
                             {servicos.map((servico) => (
                                 <option key={servico.id} value={servico.id}>
-                                    {servico.tipo + ' R$:' + servico.valor}
+                                    {servico.nomeTipoServico + ' R$ ' + servico.preco}
                                 </option>
                             ))}
                         </select>
                     </div>
                 )}
-
-
-            </Container >
-
+            </Container>
         </>
     );
 }

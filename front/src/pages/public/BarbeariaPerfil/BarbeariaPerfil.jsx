@@ -9,8 +9,10 @@ import perfil from "../../../assets/perfil.png";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FiCheck } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const BarbeariaPerfil = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [barbearia, setBarbearia] = useState('');
     const [barbeiros, setBarbeiros] = useState([]);
@@ -24,6 +26,7 @@ const BarbeariaPerfil = () => {
                 const dados = await buscarBarbeariaPorId(id);
                 setBarbearia(dados);
                 setBarbeiros(dados.barbeiros || []);
+                console.log(dados)
             } catch (error) {
                 console.log(error);
             } finally {
@@ -34,12 +37,17 @@ const BarbeariaPerfil = () => {
     }, [id]);
 
     const handleBook = () => {
-        console.log("Barbeiro selecionado:", barbeiroSelecionado);
-        // Aqui pode redirecionar para outra tela ou salvar no backend
+        const barbeiro = barbeiros.find(b => b.id === barbeiroSelecionado);
+        navigate("/novo-agendamento", {
+            state: {
+                barbearia,
+                barbeiro
+            }
+        });
     };
 
     return (
-        <div className="container">
+        <div>
             <div className="header-container">
                 <ArrowReturn route={ROUTES.FEED} />
                 <PublicHeader icone={favoritos} />

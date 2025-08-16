@@ -30,37 +30,15 @@ export async function buscarBarbeirosPorBarbearia(idBarbearia) {
 }
 
 
-export function buscarServicos(idBarbeiro) {
+export async function buscarServicos(idBarbeiro) {
 
-  const servicosPorBarbeiro = {
-    10: [
-      { id: 4, tipo: 'Corte', valor: '35,00'},
-      { id: 5, tipo: 'Corte + sombrancelha', valor: '40,00'},
-      { id: 6, tipo: 'Corte + barba', valor: '45,00'}
-    ],
+  try {
+    const servicos = await axios.get(`http://192.168.0.106:8080/barbeiroServicos/${idBarbeiro}`);
+    return servicos.data;
+  } catch (error) {
+    console.log('Erro ao buscar barbeiros por ID:', error)
+    throw error;
+  }
 
-    11: [
-      { id: 4, tipo: 'Corte', valor: '35,00'},
-      { id: 5, tipo: 'Corte + sombrancelha', valor: '40,00'}
-    ],
-
-    20: [
-      { id: 4, tipo: 'Corte', valor: '35,00'},
-    ],
-
-    21: [
-      { id: 4, tipo: 'Corte', valor: '35,00'},
-      { id: 5, tipo: 'Corte + sombrancelha', valor: '40,00'},
-      { id: 6, tipo: 'Corte + barba', valor: '45,00'}
-    ],
-
-    30: [
-      { id: 4, tipo: 'Corte', valor: '35,00'},
-      { id: 5, tipo: 'Corte + sombrancelha', valor: '40,00'},
-      { id: 7, tipo: 'Platinado', valor: '90,00'}
-    ]
-  };
-
-  return servicosPorBarbeiro[idBarbeiro] || [];
 }
 
