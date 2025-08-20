@@ -91,3 +91,29 @@ CREATE TABLE horario_trabalho (
     CONSTRAINT fk_horario_barbeiro FOREIGN KEY (id_barbeiro)
         REFERENCES barbeiros(id) ON DELETE CASCADE
 );
+
+create table agendamentos(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    id_barbeiro INT NOT NULL,
+    id_usuario INT,
+    id_barbeiro_servico INT NOT NULL,
+    data DATE NOT NULL,
+    horario TIME NOT NULL,
+    criado_em DATETIME,
+    atualizado_em DATETIME,
+
+    CONSTRAINT fk_agendamento_barbeiro
+        FOREIGN KEY (id_barbeiro) REFERENCES barbeiros(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_agendamento_usuario
+        FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_agendamento_servico
+        FOREIGN KEY (id_barbeiro_servico) REFERENCES barbeiro_servico(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);

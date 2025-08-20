@@ -117,3 +117,32 @@ INSERT INTO horario_trabalho (id_barbeiro, dia_semana, hora_inicio, hora_fim) VA
 (1, 'SEXTA', '08:00', '12:00'),
 (1, 'SEXTA', '13:00', '17:00'),
 (1, 'SABADO', '08:00', '12:00');
+
+create table agendamentos(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    id_barbeiro INT NOT NULL,
+    id_usuario INT,
+    id_barbeiro_servico INT NOT NULL,
+    data DATE NOT NULL,
+    horario TIME NOT NULL,
+    criado_em DATETIME,
+    atualizado_em DATETIME,
+
+    CONSTRAINT fk_agendamento_barbeiro
+        FOREIGN KEY (id_barbeiro) REFERENCES barbeiros(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_agendamento_usuario
+        FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_agendamento_servico
+        FOREIGN KEY (id_barbeiro_servico) REFERENCES barbeiro_servico(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+ALTER TABLE agendamentos
+ADD CONSTRAINT uk_barbeiro_data_horario UNIQUE (id_barbeiro, data, horario);

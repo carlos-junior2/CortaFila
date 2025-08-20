@@ -6,6 +6,7 @@ import com.cortaFila.cortaFila.data.dto.BarbeiroServicoTipoServicoDTO;
 import com.cortaFila.cortaFila.data.model.Barbeiro;
 import com.cortaFila.cortaFila.data.model.BarbeiroServico;
 import com.cortaFila.cortaFila.data.model.TipoServico;
+import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.repository.BarbeiroServicoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,5 +52,10 @@ public class BarbeiroServicoService {
                 ))
                 .toList();
 
+    }
+
+    public BarbeiroServico buscarBarbeiroServicoPorId(Long barbeiroServicoId){
+        return barbeiroServicoRepository.findById(barbeiroServicoId)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Barbeiro Serviço não encontrado!"));
     }
 }
