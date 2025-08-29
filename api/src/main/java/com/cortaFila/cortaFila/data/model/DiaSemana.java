@@ -3,6 +3,8 @@ package com.cortaFila.cortaFila.data.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.time.DayOfWeek;
+
 public enum DiaSemana {
     DOMINGO("Domingo"),
     SEGUNDA("Segunda-feira"),
@@ -32,4 +34,17 @@ public enum DiaSemana {
         }
         throw new IllegalArgumentException("Dia inválido: " + descricao);
     }
+
+    public static DiaSemana fromDayOfWeek(DayOfWeek day) {
+        return switch(day) {
+            case MONDAY -> DiaSemana.SEGUNDA;
+            case TUESDAY -> DiaSemana.TERCA;
+            case WEDNESDAY -> DiaSemana.QUARTA;
+            case THURSDAY -> DiaSemana.QUINTA;
+            case FRIDAY -> DiaSemana.SEXTA;
+            case SATURDAY -> DiaSemana.SABADO;
+            case SUNDAY -> DiaSemana.DOMINGO;
+        };
+    }
+
 }

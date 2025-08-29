@@ -2,15 +2,18 @@ package com.cortaFila.cortaFila.service;
 
 import com.cortaFila.cortaFila.data.dto.AgendamentoRequestDTO;
 import com.cortaFila.cortaFila.data.dto.AgendamentoResponseDTO;
-import com.cortaFila.cortaFila.data.model.Agendamento;
-import com.cortaFila.cortaFila.data.model.Barbeiro;
-import com.cortaFila.cortaFila.data.model.BarbeiroServico;
-import com.cortaFila.cortaFila.data.model.Usuario;
+import com.cortaFila.cortaFila.data.model.*;
+import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.exception.RegraDeNegocioException;
 import com.cortaFila.cortaFila.repository.AgendamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +23,7 @@ public class AgendamentoService {
     private final BarbeiroService barbeiroService;
     private final UsuarioService usuarioService;
     private final BarbeiroServicoService barbeiroServicoService;
+    private final HorarioTrabalhoService horarioTrabalhoService;
 
     @Transactional
     public AgendamentoResponseDTO criarAgendamento(AgendamentoRequestDTO dto){
@@ -54,6 +58,54 @@ public class AgendamentoService {
         return toResponseDTO(salvo);
     }
 
+    public List<AgendamentoResponseDTO> listarAgendamentosPorBarbeiro(Long barbeiro, LocalDate data){
+        List<Agendamento> agendamentos = agendamentoRepository.findByBarbeiroIdAndData(barbeiro, data);
+        return agendamentos.stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+
+    public List<LocalTime> buscarHorariosDisponiveis(Long idBarbeiro, LocalDate data, Long idServico){
+        // Pega o serviço para descobrir a duração
+        BarbeiroServico servico = barbeiroServicoService.buscarBarbeiroServicoPorId(idServico);
+        Integer duracaoMin = servico.getDuracaoMin();
+
+        // Pega horários já ocupados do barbeiro no dia
+        List<Agendamento> agendados = agendamentoRepository.findByBarbeiroIdAndData(idBarbeiro, data);
+
+        // Jornada de trabalho do barbeiro
+        DiaSemana dia = DiaSemana.fromDayOfWeek(data.getDayOfWeek());
+        List<HorarioTrabalho> jornadas = horarioTrabalhoService.buscarHorariosPorBarbeiro(idBarbeiro, dia);
+        if (jornadas.isEmpty()) {
+            throw new RegistroNaoEncontradoException("Horários de trabalho não cadastrados para este dia.");
+        }
+        List<LocalTime> disponiveis = new ArrayList<>();
+
+        for (HorarioTrabalho jornada : jornadas){
+            LocalTime inicio = jornada.getHoraInicio();
+            LocalTime fim = jornada.getHoraFim();
+            LocalTime atual = inicio;
+
+            while(!atual.plusMinutes(duracaoMin).isAfter(fim)){
+                LocalTime inicioSlot = atual;
+                LocalTime fimSlot = atual.plusMinutes(duracaoMin);
+
+                boolean conflita = agendados.stream().anyMatch(ag ->{
+                    LocalTime inicioAg = ag.getHorario();
+                    LocalTime fimAg = inicioAg.plusMinutes(ag.getBarbeiroServico().getDuracaoMin());
+                    return !(fimSlot.isBefore(inicioAg) || inicioSlot.isAfter(fimAg));
+                });
+
+                if (!conflita){
+                    disponiveis.add(atual);
+                }
+
+                atual = atual.plusMinutes(30);
+            }
+        }
+        return disponiveis;
+    }
+
     public AgendamentoResponseDTO toResponseDTO(Agendamento agendamento){
         return new AgendamentoResponseDTO(
                 agendamento.getId(),
@@ -63,8 +115,10 @@ public class AgendamentoService {
                 agendamento.getUsuario() != null ? agendamento.getUsuario().getNome() : null,
                 agendamento.getBarbeiroServico().getId(),
                 agendamento.getBarbeiroServico().getTipoServico().getNome(),
+                agendamento.getBarbeiroServico().getPreco(),
                 agendamento.getData(),
-                agendamento.getHorario()
+                agendamento.getHorario(),
+                agendamento.getHorario().plusMinutes(agendamento.getBarbeiroServico().getDuracaoMin())
         );
     }
 }

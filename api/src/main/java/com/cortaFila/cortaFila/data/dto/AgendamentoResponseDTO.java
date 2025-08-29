@@ -1,5 +1,6 @@
 package com.cortaFila.cortaFila.data.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,6 +12,8 @@ public record AgendamentoResponseDTO(
         String usuarioNome,
         Long idBarbeiroServico,
         String servicoNome,
+        BigDecimal servicoPreco,
         LocalDate data,
-        LocalTime horario
+        LocalTime inicio,
+        LocalTime termino
 ){}
