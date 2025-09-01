@@ -2,10 +2,12 @@ package com.cortaFila.cortaFila.data.dto;
 
 import com.cortaFila.cortaFila.data.model.DiaSemana;
 import com.cortaFila.cortaFila.data.model.HorarioTrabalho;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+@Schema(name = "Horário Trabalho")
 public record HorarioTrabalhoDTO(
         @NotNull(message = "O dia da semana é obrigatório")
         DiaSemana diaSemana,

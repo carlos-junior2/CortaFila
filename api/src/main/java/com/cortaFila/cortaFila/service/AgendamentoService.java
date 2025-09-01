@@ -59,6 +59,7 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoResponseDTO> listarAgendamentosPorBarbeiro(Long barbeiro, LocalDate data){
+        Barbeiro b = barbeiroService.buscarPorId(barbeiro);
         List<Agendamento> agendamentos = agendamentoRepository.findByBarbeiroIdAndData(barbeiro, data);
         return agendamentos.stream()
                 .map(this::toResponseDTO)

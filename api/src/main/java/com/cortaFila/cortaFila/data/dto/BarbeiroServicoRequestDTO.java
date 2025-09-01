@@ -1,11 +1,13 @@
 package com.cortaFila.cortaFila.data.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
+@Schema(name = "Barbeiro Serviço")
 public record BarbeiroServicoRequestDTO(
         @NotNull(message = "O id do barbeiro é obrigatório")
         Long barbeiroId,

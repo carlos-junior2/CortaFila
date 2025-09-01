@@ -2,9 +2,11 @@ package com.cortaFila.cortaFila.data.dto;
 
 import com.cortaFila.cortaFila.data.model.Barbearia;
 import com.cortaFila.cortaFila.data.model.Endereco;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
+@Schema(name = "Barbearia Resposta")
 public record BarbeariaResponseDTO(
         Long id,
         String nome,

@@ -6,6 +6,10 @@ import com.cortaFila.cortaFila.data.dto.UsuarioRequestDTO;
 import com.cortaFila.cortaFila.data.model.Usuario;
 import com.cortaFila.cortaFila.infra.security.TokenService;
 import com.cortaFila.cortaFila.repository.UsuarioRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +25,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Tag(name = "Auth")
 public class AuthController {
     @Autowired
     private final UsuarioRepository usuarioRepository;
@@ -31,7 +36,14 @@ public class AuthController {
     @Autowired
     private final TokenService tokenService;
 
+
     @PostMapping("/login")
+    @Operation(summary = "Login")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK."),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "Bad Request")
+    })
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
         Optional<Usuario> optionalUsuario = this.usuarioRepository.findByUsername(loginRequest.username());
 
@@ -47,6 +59,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "Register")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK."),
+            @ApiResponse(responseCode = "400", description = "Bad Request")
+    })
     public ResponseEntity register(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
         Optional<Usuario> usuario = this.usuarioRepository.findByEmail(usuarioRequestDTO.email());
 
