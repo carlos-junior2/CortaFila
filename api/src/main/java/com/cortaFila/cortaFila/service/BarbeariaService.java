@@ -8,6 +8,8 @@ import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.repository.BarbeariaRepository;
 import com.cortaFila.cortaFila.repository.EnderecoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +20,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -129,24 +130,32 @@ public class BarbeariaService {
         );
     }
 
-    public List<BarbeariaResponseDTO> listar(){
-        List<Barbearia> barbearias = barbeariaRepository.findAllComEnderecos();
+    public Page<BarbeariaResponseDTO> listarPorCidade(String cidade, Pageable pageable) {
+        return barbeariaRepository.findByEnderecos_CidadeIgnoreCase(cidade, pageable)
+                .map(barbearia -> new BarbeariaResponseDTO(
+                        barbearia.getId(),
+                        barbearia.getNome(),
+                        barbearia.getDescricao(),
+                        barbearia.getEmail(),
+                        barbearia.getImagemPatch(),
+                        barbearia.getEnderecos().stream()
+                                .map(EnderecoDTO::fromEntity)
+                                .toList()
+                ));
+    }
 
-        return barbearias.stream()
-                .map(barbearia -> {
-                    List<EnderecoDTO> enderecosDTO = barbearia.getEnderecos().stream()
-                            .map(EnderecoDTO::fromEntity)
-                            .collect(Collectors.toList());
-
-                    return new BarbeariaResponseDTO(
-                            barbearia.getId(),
-                            barbearia.getNome(),
-                            barbearia.getDescricao(),
-                            barbearia.getEmail(),
-                            barbearia.getImagemPatch(),
-                            enderecosDTO
-                    );
-                }).collect(Collectors.toList());
+    public Page<BarbeariaResponseDTO> listar(Pageable pageable){
+        return barbeariaRepository.findAll(pageable)
+                .map(barbearia -> new BarbeariaResponseDTO(
+                        barbearia.getId(),
+                        barbearia.getNome(),
+                        barbearia.getDescricao(),
+                        barbearia.getEmail(),
+                        barbearia.getImagemPatch(),
+                        barbearia.getEnderecos().stream()
+                                .map(EnderecoDTO::fromEntity)
+                                .toList()
+                ));
     }
 
     public List<BarbeariaComBarbeiroDTO> listarComBarbeiros() {
