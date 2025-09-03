@@ -26,7 +26,6 @@ const BarbeariaPerfil = () => {
                 const dados = await buscarBarbeariaPorId(id);
                 setBarbearia(dados);
                 setBarbeiros(dados.barbeiros || []);
-                console.log(dados)
             } catch (error) {
                 console.log(error);
             } finally {
@@ -37,7 +36,7 @@ const BarbeariaPerfil = () => {
     }, [id]);
 
     const handleBook = () => {
-        const barbeiro = barbeiros.find(b => b.id === barbeiroSelecionado);
+        const barbeiro = barbeiros.find(b => b === barbeiroSelecionado);
         navigate("/novo-agendamento", {
             state: {
                 barbearia,
@@ -78,14 +77,14 @@ const BarbeariaPerfil = () => {
                             barbeiros.map(barbeiro => (
                                 <div
                                     key={barbeiro.id}
-                                    className={`barber-card ${barbeiroSelecionado === barbeiro.id ? "selected" : ""}`}
-                                    onClick={() => setBarbeiroSelecionado(barbeiro.id)}
+                                    className={`barber-card ${barbeiroSelecionado === barbeiro ? "selected" : ""}`}
+                                    onClick={() => setBarbeiroSelecionado(barbeiro)}
                                 >
                                     <div className="barber-info">
                                         <img src={perfil} alt={barbeiro.nomeUsuario} />
                                         <span>{barbeiro.nomeUsuario}</span>
                                     </div>
-                                    {barbeiroSelecionado === barbeiro.id && <FiCheck size={20} />}
+                                    {barbeiroSelecionado === barbeiro && <FiCheck size={20} />}
                                 </div>
                             ))
                         ) : (
