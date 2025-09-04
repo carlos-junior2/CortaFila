@@ -116,10 +116,15 @@ public class AgendamentoService {
     }
 
     public AgendamentoResponseDTO toResponseDTO(Agendamento agendamento){
+        Barbeiro barbeiro = agendamento.getBarbeiro();
+        Barbearia barbearia = barbeiro.getBarbearia();
         return new AgendamentoResponseDTO(
                 agendamento.getId(),
-                agendamento.getBarbeiro().getId(),
-                agendamento.getBarbeiro().getUsuario().getNome(),
+                barbeiro.getId(),
+                barbeiro.getUsuario().getNome(),
+                barbearia.getId(),
+                barbearia.getNome(),
+                barbearia.getImagemPatch(),
                 agendamento.getUsuario() != null ? agendamento.getUsuario().getId() : null,
                 agendamento.getUsuario() != null ? agendamento.getUsuario().getNome() : null,
                 agendamento.getBarbeiroServico().getId(),
