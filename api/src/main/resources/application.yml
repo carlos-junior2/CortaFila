@@ -35,3 +35,7 @@ api:
     token:
       secret: "my-key-to-test"
 
+twilio:
+  account-sid: ${twilio-sid}
+  auth-token: ${twilio-token}
+  phone-number: ${twilio-phone}

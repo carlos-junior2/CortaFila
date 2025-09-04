@@ -7,6 +7,8 @@ import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.exception.RegraDeNegocioException;
 import com.cortaFila.cortaFila.repository.AgendamentoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +66,12 @@ public class AgendamentoService {
         return agendamentos.stream()
                 .map(this::toResponseDTO)
                 .toList();
+    }
+
+    public Page<AgendamentoResponseDTO> listarAgendamentosPorUsuario(Long idUsuario, Pageable pageable){
+        Usuario usuario = usuarioService.buscarPorId(idUsuario);
+        return agendamentoRepository.findByUsuario(usuario, pageable)
+                .map(this::toResponseDTO);
     }
 
     public List<LocalTime> buscarHorariosDisponiveis(Long idBarbeiro, LocalDate data, Long idServico){
