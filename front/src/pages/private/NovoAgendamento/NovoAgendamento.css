@@ -1,3 +1,7 @@
+.form-group {
+    padding: 0px 20px 0px 20px;
+}
+
 .form-label {
     font-size: 1.8em;
     font-family: 'Roboto';
@@ -6,7 +10,21 @@
     display: block;
 }
 
-button,
+.days-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.button-day {
+    border-radius: 10px;
+    background-color: #eaeaea;
+    padding: 10px;
+    font-size: 1.4em;
+    width: 100%;
+}
+
 select {
     text-transform: none;
     font-family: 'Roboto';
