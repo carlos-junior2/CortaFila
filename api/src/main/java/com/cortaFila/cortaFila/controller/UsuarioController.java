@@ -11,6 +11,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,5 +69,26 @@ public class UsuarioController {
         Usuario usuario = usuarioService.buscarPorId(id);
         usuarioService.excluir(usuario);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    @Operation(summary = "listar", description = "Listar todos os usuários existente")
+    @ApiResponse(responseCode = "200", description = "OK.")
+    public ResponseEntity<Page<UsuarioResponseDTO>> listarUsuarios(
+            @PageableDefault(page = 0, size = 5, sort = "nome") Pageable pageable){
+        Page<UsuarioResponseDTO> resultado = usuarioService.listar(pageable);
+        return ResponseEntity.ok(resultado);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar usuário por ID", description = "Buscar usuário por ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK."),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado!")
+    })
+    public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable("id") Long id){
+        Usuario usuario = usuarioService.buscarPorId(id);
+        UsuarioResponseDTO dto = new UsuarioResponseDTO(usuario);
+        return ResponseEntity.ok(dto);
     }
 }

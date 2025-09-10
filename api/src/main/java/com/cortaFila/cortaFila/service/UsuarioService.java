@@ -1,11 +1,14 @@
 package com.cortaFila.cortaFila.service;
 
 import com.cortaFila.cortaFila.data.dto.UsuarioRequestDTO;
+import com.cortaFila.cortaFila.data.dto.UsuarioResponseDTO;
 import com.cortaFila.cortaFila.exception.RegistroDuplicadoException;
 import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.data.model.Usuario;
 import com.cortaFila.cortaFila.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +46,17 @@ public class UsuarioService {
             throw new RegistroNaoEncontradoException("Usuário não encontrado!");
         }
         usuarioRepository.deleteById(usuario.getId());
+    }
+
+    public Page<UsuarioResponseDTO> listar(Pageable pageable){
+        return usuarioRepository.findAll(pageable)
+                .map(usuario -> new UsuarioResponseDTO(
+                        usuario.getId(),
+                        usuario.getNome(),
+                        usuario.getUsername(),
+                        usuario.getEmail(),
+                        usuario.getRole()
+                ));
     }
 
     private void validarDuplicidade(String email, String username, Long idIgnorado) {
