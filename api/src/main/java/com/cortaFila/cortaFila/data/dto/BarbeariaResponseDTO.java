@@ -13,7 +13,7 @@ public record BarbeariaResponseDTO(
         String descricao,
         String email,
         String imagemPatch,
-        List<EnderecoDTO> enderecos
+        List<EnderecoResponseDTO> enderecos
 ) {
     public BarbeariaResponseDTO(Barbearia b, Endereco endereco) {
         this(
@@ -22,7 +22,7 @@ public record BarbeariaResponseDTO(
                 b.getDescricao(),
                 b.getEmail(),
                 b.getImagemPatch(),
-                endereco != null ? List.of(new EnderecoDTO(endereco)) : List.of()
+                endereco != null ? List.of(new EnderecoResponseDTO(endereco)) : List.of()
         );
     }
 }

@@ -1,16 +1,22 @@
 package com.cortaFila.cortaFila.controller;
 
-import com.cortaFila.cortaFila.data.dto.EnderecoDTO;
+import com.cortaFila.cortaFila.data.dto.EnderecoRequestDTO;
+import com.cortaFila.cortaFila.data.dto.EnderecoResponseDTO;
 import com.cortaFila.cortaFila.data.model.Barbearia;
 import com.cortaFila.cortaFila.data.model.Endereco;
 import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.service.BarbeariaService;
 import com.cortaFila.cortaFila.service.EnderecoService;
+import com.twilio.http.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +38,7 @@ public class EnderecoController {
             @ApiResponse(responseCode = "201", description = "Endereço criado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Barbearia não encontrada")
     })
-    public ResponseEntity<EnderecoDTO> salvar(@PathVariable Long idBarbearia, @RequestBody EnderecoDTO dto){
+    public ResponseEntity<EnderecoResponseDTO> salvar(@PathVariable Long idBarbearia, @RequestBody EnderecoRequestDTO dto){
         Optional<Barbearia> optionalBarbearia = barbeariaService.buscarPorId(idBarbearia);
         if (optionalBarbearia.isEmpty()) {
             throw new RegistroNaoEncontradoException("Barbearia não encontrada na base de dados!");
@@ -41,7 +47,49 @@ public class EnderecoController {
         Endereco endereco = dto.toEntity();
         endereco.setBarbearia(barbearia);
 
-        Endereco enderecoSalvo = enderecoService.salvar(endereco);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        EnderecoResponseDTO enderecoSalvo = enderecoService.salvar(endereco);
+        return ResponseEntity.status(HttpStatus.CREATED).body(enderecoSalvo);
     }
+
+    @GetMapping
+    @Operation(summary = "Listar", description = "Listar todos os endereços")
+    @ApiResponse(responseCode = "200", description = "OK.")
+    public ResponseEntity<Page<EnderecoResponseDTO>> listar(@PageableDefault(page = 0, size = 5, sort = "cidade") Pageable pageable){
+        Page<EnderecoResponseDTO> resultado = enderecoService.listar(pageable);
+        return ResponseEntity.ok(resultado);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar endereço por ID", description = "Buscar um endereço por ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK."),
+            @ApiResponse(responseCode = "404", description = "Endereço não encontrado!")
+    })
+    public ResponseEntity<EnderecoResponseDTO> buscarPorId(@PathVariable Long id){
+        EnderecoResponseDTO dto = enderecoService.buscarPorId(id);
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar", description = "Atualizar um endereço via ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK."),
+            @ApiResponse(responseCode = "404", description = "Endereço não encontrado!")
+    })
+    public ResponseEntity<EnderecoResponseDTO> atualizarEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoRequestDTO dto){
+        EnderecoResponseDTO atualizado = enderecoService.atualizar(id, dto);
+        return ResponseEntity.ok(atualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Excluir", description = "Excluir um endereço via ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "404", description = "Endereço não encontrado!")
+    })
+    public ResponseEntity<Void> excluir (@PathVariable Long id){
+        enderecoService.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

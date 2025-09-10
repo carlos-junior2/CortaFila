@@ -104,7 +104,8 @@ public class BarbeariaService {
                 barbearia.getEmail(),
                 barbearia.getImagemPatch(),
                 barbearia.getEnderecos().stream()
-                        .map(e -> new EnderecoDTO(
+                        .map(e -> new EnderecoResponseDTO(
+                                e.getId(),
                                 e.getLogradouro(),
                                 e.getBairro(),
                                 e.getCidade(),
@@ -139,7 +140,7 @@ public class BarbeariaService {
                         barbearia.getEmail(),
                         barbearia.getImagemPatch(),
                         barbearia.getEnderecos().stream()
-                                .map(EnderecoDTO::fromEntity)
+                                .map(EnderecoResponseDTO::fromEntity)
                                 .toList()
                 ));
     }
@@ -153,7 +154,7 @@ public class BarbeariaService {
                         barbearia.getEmail(),
                         barbearia.getImagemPatch(),
                         barbearia.getEnderecos().stream()
-                                .map(EnderecoDTO::fromEntity)
+                                .map(EnderecoResponseDTO::fromEntity)
                                 .toList()
                 ));
     }
@@ -168,9 +169,10 @@ public class BarbeariaService {
                         b.getDescricao(),
                         b.getEmail(),
                         b.getImagemPatch(),
-                        // Mapear lista de Endereco para lista de EnderecoDTO
+                        // Mapear lista de Endereco para lista de EnderecoResponseDTO
                         b.getEnderecos().stream()
-                                .map(e -> new EnderecoDTO(
+                                .map(e -> new EnderecoResponseDTO(
+                                        e.getId(),
                                         e.getLogradouro(),
                                         e.getBairro(),
                                         e.getCidade(),

@@ -17,7 +17,7 @@ public record BarbeariaRequestDTO(
         String email,
 
         String imagemPatch,
-        EnderecoDTO endereco
+        EnderecoRequestDTO endereco
 ) {
     public Barbearia toEntity() {
         Barbearia barbearia = new Barbearia();

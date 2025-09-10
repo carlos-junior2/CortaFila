@@ -4,7 +4,7 @@ import com.cortaFila.cortaFila.data.model.Endereco;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "Endereço")
-public record EnderecoDTO(
+public record EnderecoRequestDTO(
         String logradouro,
         String bairro,
         String cidade,
@@ -12,8 +12,8 @@ public record EnderecoDTO(
         String cep,
         String pontoDeReferencia,
         String telefone
-){
-    public EnderecoDTO(Endereco e) {
+) {
+    public EnderecoRequestDTO(Endereco e) {
         this(e.getLogradouro(), e.getBairro(), e.getCidade(), e.getEstado(), e.getCep(), e.getPontoDeReferencia(), e.getTelefone());
     }
 
@@ -29,20 +29,7 @@ public record EnderecoDTO(
         return endereco;
     }
 
-    public static EnderecoDTO fromEntity(Endereco endereco) {
-        return new EnderecoDTO(
-                endereco.getLogradouro(),
-                endereco.getBairro(),
-                endereco.getCidade(),
-                endereco.getEstado(),
-                endereco.getCep(),
-                endereco.getPontoDeReferencia(),
-                endereco.getTelefone()
-        );
-    }
-
     public boolean temDadosValidos() {
         return cep != null && !cep.isBlank();
     }
-
 }

@@ -33,7 +33,7 @@ public class BarbeariaController {
     @Operation(summary = "Salvar" , description = "Cadastrar nova barbearia")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Cadastrado com sucesso."),
-            @ApiResponse(responseCode = "409", description = "Barbearia já cadastrado.")
+            @ApiResponse(responseCode = "409", description = "Barbearia já cadastrada.")
     })
     public ResponseEntity<BarbeariaResponseDTO> criarBarbearia(@Valid @RequestBody BarbeariaRequestDTO barbeariaRequestDTO){
         BarbeariaResponseDTO dto = barbeariaService.salvar(barbeariaRequestDTO);
@@ -93,7 +93,7 @@ public class BarbeariaController {
         return ResponseEntity.ok(lista);
     }
 
-    @Operation(summary = "Listar Barbearia", description = "Listar barbearia por ID")
+    @Operation(summary = "Buscar barbearia por ID", description = "Listar barbearia por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK."),
             @ApiResponse(responseCode = "404", description = "Barbearia não encontrada.")

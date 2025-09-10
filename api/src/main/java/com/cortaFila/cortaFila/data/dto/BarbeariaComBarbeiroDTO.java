@@ -11,6 +11,6 @@ public record BarbeariaComBarbeiroDTO(
         String descricao,
         String email,
         String imagemPatch,
-        List<EnderecoDTO> enderecos,
+        List<EnderecoResponseDTO> enderecos,
         List<BarbeiroResponseDTO> barbeiros
 ) {}
