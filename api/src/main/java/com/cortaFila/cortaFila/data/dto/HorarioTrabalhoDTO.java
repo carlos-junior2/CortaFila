@@ -22,6 +22,14 @@ public record HorarioTrabalhoDTO(
                 message = "Hora de fim deve estar no formato HH:mm")
         String horaFim
 ) {
+        public HorarioTrabalhoDTO(HorarioTrabalho ht){
+                this(
+                        ht.getDiaSemana(),
+                        ht.getHoraInicio().toString(),
+                        ht.getHoraFim().toString()
+                );
+        }
+
         public static HorarioTrabalhoDTO fromEntity(HorarioTrabalho entity) {
                 return new HorarioTrabalhoDTO(
                         entity.getDiaSemana(),

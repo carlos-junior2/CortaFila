@@ -10,6 +10,9 @@ import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.repository.BarbeariaRepository;
 import com.cortaFila.cortaFila.repository.BarbeiroRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,11 @@ public class BarbeiroService {
     private final UsuarioService usuarioService;
     private final BarbeariaRepository barbeariaRepository;
     private final HorarioTrabalhoService horarioTrabalhoService;
+
+    public Page<BarbeiroResponseDTO> listar(Pageable pageable){
+        return barbeiroRepository.findAll(pageable)
+                .map(BarbeiroResponseDTO::new);
+    }
 
     public Barbeiro buscarPorId(Long id){
         return barbeiroRepository.findById(id)
@@ -80,4 +88,5 @@ public class BarbeiroService {
                         .toList()
         );
     }
+
 }
