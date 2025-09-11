@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +34,35 @@ public class BarbeiroServicoController {
         return ResponseEntity.ok(barbeiroServicoResponseDTO);
     }
 
-    @GetMapping("/{idBarbeiro}")
+    @GetMapping("/barbeiro/{idBarbeiro}")
     @Operation(summary = "Listar por ID Barbeiro", description = "Listar Barbeiro Serviço por ID do Barbeiro")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK."),
-            @ApiResponse(responseCode = "404", description = "Barbeiro Serviço não encontrado.")
+            @ApiResponse(responseCode = "404", description = "Barbeiro Serviço não encontrado."),
+            @ApiResponse(responseCode = "404", description = "Barbeiro não encontrado.")
     })
     public ResponseEntity<List<BarbeiroServicoTipoServicoDTO>> listarPorIdBarbeiro(@PathVariable Long idBarbeiro){
         return ResponseEntity.ok(barbeiroServicoService.buscarServicosPorIdBarbeiro(idBarbeiro));
     }
 
+    @GetMapping
+    @Operation(summary = "Listar", description = "Listar todos os Barbeiro Servicos")
+    @ApiResponse(responseCode = "200", description = "OK")
+    public ResponseEntity<Page<BarbeiroServicoTipoServicoDTO>> listar(
+            @PageableDefault(size = 5, sort = "tipoServico.nome") Pageable pageable){
+        Page<BarbeiroServicoTipoServicoDTO> resultado = barbeiroServicoService.listar(pageable);
+        return ResponseEntity.ok(resultado);
+    }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar por ID", description = "Buscar Barbeiro Serviço por ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK."),
+            @ApiResponse(responseCode = "404", description = "Barbeiro Serviço não encontrado.")
+    })
+    public ResponseEntity<BarbeiroServicoTipoServicoDTO> buscarPorId(@PathVariable Long id){
+        BarbeiroServicoTipoServicoDTO dto = barbeiroServicoService.buscarPorId(id);
+        return ResponseEntity.ok(dto);
+    }
+    
 }

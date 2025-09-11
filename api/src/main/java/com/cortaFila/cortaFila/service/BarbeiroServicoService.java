@@ -9,6 +9,8 @@ import com.cortaFila.cortaFila.data.model.TipoServico;
 import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.repository.BarbeiroServicoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,14 +44,7 @@ public class BarbeiroServicoService {
 
         return barbeiroServicoRepository.findByBarbeiroId(idBarbeiro)
                 .stream()
-                .map(sb -> new BarbeiroServicoTipoServicoDTO(
-                        sb.getId(),
-                        sb.getPreco(),
-                        sb.getDuracaoMin(),
-                        sb.getTipoServico().getId(),
-                        sb.getTipoServico().getNome(),
-                        sb.getTipoServico().getDescricao()
-                ))
+                .map(BarbeiroServicoTipoServicoDTO::new)
                 .toList();
 
     }
@@ -57,5 +52,15 @@ public class BarbeiroServicoService {
     public BarbeiroServico buscarBarbeiroServicoPorId(Long barbeiroServicoId){
         return barbeiroServicoRepository.findById(barbeiroServicoId)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Barbeiro Serviço não encontrado!"));
+    }
+
+    public Page<BarbeiroServicoTipoServicoDTO> listar(Pageable pageable){
+        return barbeiroServicoRepository.findAll(pageable)
+                .map(BarbeiroServicoTipoServicoDTO::new);
+    }
+
+    public BarbeiroServicoTipoServicoDTO buscarPorId(Long id){
+        BarbeiroServico bs = this.buscarBarbeiroServicoPorId(id);
+        return new BarbeiroServicoTipoServicoDTO(bs);
     }
 }
