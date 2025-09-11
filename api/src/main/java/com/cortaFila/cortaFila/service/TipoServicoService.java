@@ -2,11 +2,12 @@ package com.cortaFila.cortaFila.service;
 
 import com.cortaFila.cortaFila.data.dto.TipoServicoRequestDTO;
 import com.cortaFila.cortaFila.data.dto.TipoServicoResponseDTO;
-import com.cortaFila.cortaFila.data.model.Barbeiro;
 import com.cortaFila.cortaFila.data.model.TipoServico;
 import com.cortaFila.cortaFila.exception.RegistroNaoEncontradoException;
 import com.cortaFila.cortaFila.repository.TipoServicoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,18 +18,36 @@ public class TipoServicoService {
 
     public TipoServico buscarPorId(Long id){
         return tipoServicoRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Barbeiro não encontrado!"));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Tipo Serviço não encontrado!"));
     }
 
     public TipoServicoResponseDTO salvar(TipoServicoRequestDTO dto){
-        TipoServico tipoServico = new TipoServico();
-        tipoServico = dto.toEntity();
+        TipoServico tipoServico = dto.toEntity();
         tipoServicoRepository.save(tipoServico);
-        TipoServicoResponseDTO dtoSaida = new TipoServicoResponseDTO(
+        return new TipoServicoResponseDTO(
                 tipoServico.getId(),
                 tipoServico.getNome(),
                 tipoServico.getDescricao()
         );
-        return dtoSaida;
+    }
+
+    public Page<TipoServicoResponseDTO> listar(Pageable pageable){
+        return tipoServicoRepository.findAll(pageable)
+                .map(TipoServicoResponseDTO::new);
+    }
+
+    public TipoServicoResponseDTO buscar(Long id){
+        TipoServico ts = this.buscarPorId(id);
+        return new TipoServicoResponseDTO(ts);
+    }
+
+    public TipoServicoResponseDTO atualizar(Long id, TipoServicoRequestDTO dto){
+        TipoServico ts = this.buscarPorId(id);
+        ts.setNome(dto.nome());
+        ts.setDescricao(dto.descricao());
+
+        TipoServico atualizado = tipoServicoRepository.save(ts);
+
+        return new TipoServicoResponseDTO(atualizado);
     }
 }

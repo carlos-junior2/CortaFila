@@ -53,5 +53,5 @@ public class BarbeiroController {
         BarbeiroResponseDTO dto = new BarbeiroResponseDTO(barbeiro);
         return ResponseEntity.ok(dto);
     }
-    
+
 }
