@@ -63,4 +63,14 @@ public class BarbeiroServicoService {
         BarbeiroServico bs = this.buscarBarbeiroServicoPorId(id);
         return new BarbeiroServicoTipoServicoDTO(bs);
     }
+
+    public BarbeiroServicoTipoServicoDTO atualizar(Long id, BarbeiroServicoRequestDTO dto){
+        BarbeiroServico bs = buscarBarbeiroServicoPorId(id);
+        bs.setPreco(dto.preco());
+        bs.setDuracaoMin(dto.duracaoMin());
+
+        BarbeiroServico atualizado = barbeiroServicoRepository.save(bs);
+
+        return new BarbeiroServicoTipoServicoDTO(atualizado);
+    }
 }

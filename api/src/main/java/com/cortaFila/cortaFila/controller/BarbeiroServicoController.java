@@ -64,5 +64,15 @@ public class BarbeiroServicoController {
         BarbeiroServicoTipoServicoDTO dto = barbeiroServicoService.buscarPorId(id);
         return ResponseEntity.ok(dto);
     }
-    
+
+    @PutMapping("/{id}")
+    @Operation(summary = "atualizar", description = "Atualizar um Barbeiro Serviço por ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK."),
+            @ApiResponse(responseCode = "404", description = "Barbeiro Serviço não encontrado.")
+    })
+    public ResponseEntity<BarbeiroServicoTipoServicoDTO> atualizar(@PathVariable Long id, @RequestBody BarbeiroServicoRequestDTO dto){
+        BarbeiroServicoTipoServicoDTO atualizado = barbeiroServicoService.atualizar(id, dto);
+        return ResponseEntity.ok(atualizado);
+    }
 }
